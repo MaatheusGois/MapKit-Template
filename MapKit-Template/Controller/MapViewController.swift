@@ -35,6 +35,8 @@ class MapViewController: UIViewController {
                     self.centerMapOnLocation(location: initialLocation)
                     self.mapView.addAnnotation(bus!)
                     self.updatePosition()
+                } else {
+                    self.createAlert("Nenhum Ônibus", "Nesse momento não há ônibus na linha.")
                 }
             })
             
@@ -42,7 +44,8 @@ class MapViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        timer.invalidate()
+        if timer != nil { timer.invalidate() }
+        
     }
     
     func centerMapOnLocation(location: CLLocation) {
@@ -57,6 +60,9 @@ class MapViewController: UIViewController {
             case .success(let bus):
                 if bus.count >= 1 {
                     completion(bus[0])
+                } else {
+                    if self.timer != nil { self.timer.invalidate() }
+                    self.createAlert("Nenhum Ônibus", "Nesse momento não há ônibus na linha.")
                 }
             case .error(let description):
                 print(description)
@@ -97,6 +103,18 @@ class MapViewController: UIViewController {
         performSegue(withIdentifier: "seeMap", sender: nil)
     }
     
-    
+    private func createAlert(_ title: String, _ message:String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { action in
+            switch action.style{
+            case .default: print("default")
+            case .cancel: print("cancel")
+            case .destructive: print("destructive")
+            @unknown default:print("Deu Muito Ruim")
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
