@@ -1,6 +1,6 @@
 # MyBus
 
-**MyBus** Simple application for learn use MapKit and SPTrans API, use for search where stay your bus.
+**MyBus** Simple application for learn how to use MapKit and SPTrans API, use for search where stay your bus.
 
 ### Dependencies 
 
